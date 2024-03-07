@@ -37,7 +37,5 @@ namespace CursoIdentityUdemy.Models
         [Required(ErrorMessage = "El estado es obligatorio")]
         public bool Estado { get; set; }
 
-
-
     }
 }
