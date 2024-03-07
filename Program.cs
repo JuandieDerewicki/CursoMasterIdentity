@@ -1,10 +1,14 @@
 using CursoIdentityUdemy.Datos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuramos la conexion a SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionSql")));
+
+// Agregar el servicio Identity a la aplicacion como dependencia
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,6 +27,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Agregamos la autenticacion
+app.UseAuthentication();
 
 app.UseAuthorization();
 
