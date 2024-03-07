@@ -1,4 +1,10 @@
+using CursoIdentityUdemy.Datos;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuramos la conexion a SQL Server
+builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionSql")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
