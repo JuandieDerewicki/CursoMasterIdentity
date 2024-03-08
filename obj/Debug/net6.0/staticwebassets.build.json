@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "hL0z1A6HY5kD9kpHNfUYKQT++OUA9mbh2rJ0Oa1a/fc=",
+  "Hash": "8XEDj5SpFGVIJaAh/cdTAptekw8asua2Rn6On639gBM=",
   "Source": "CursoIdentityUdemy",
   "BasePath": "_content/CursoIdentityUdemy",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\imagenes\\X-office-calendar.jpeg",
+      "SourceId": "CursoIdentityUdemy",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\",
+      "BasePath": "_content/CursoIdentityUdemy",
+      "RelativePath": "imagenes/X-office-calendar.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imagenes\\X-office-calendar.jpeg"
     },
     {
       "Identity": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\js\\site.js",

@@ -32,6 +32,7 @@ namespace CursoIdentityUdemy.Models
         public string Direccion { get; set; }
 
         [Required(ErrorMessage = "La fecha de nacimiento es obligatoria")]
+        [Display(Name = "Fecha de nacimiento")]
         public DateTime FechaNacimiento { get; set; }
 
         [Required(ErrorMessage = "El estado es obligatorio")]
