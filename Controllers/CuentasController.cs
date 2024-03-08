@@ -63,5 +63,26 @@ namespace CursoIdentityUdemy.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Acceso(LoginViewModel accViewModel)
+        {
+            // Validamos el modelo osea los datos que ponga en el registro
+            if (ModelState.IsValid)
+            {
+                var resultado = await _signInManager.PasswordSignInAsync(accViewModel.Email, accViewModel.Password, accViewModel.RememberMe, lockoutOnFailure: false); 
+
+                if (resultado.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(String.Empty, "Acceso inválido");
+                    return View(accViewModel);
+                }
+            }
+            return View(accViewModel);
+        }
     }
 }
