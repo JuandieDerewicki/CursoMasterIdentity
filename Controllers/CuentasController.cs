@@ -56,5 +56,12 @@ namespace CursoIdentityUdemy.Controllers
             }
         }
 
+        // Metodo mostrar formulario de acceso
+        [HttpGet]
+        public IActionResult Acceso()
+        {
+
+            return View();
+        }
     }
 }
