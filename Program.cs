@@ -10,6 +10,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlS
 // Agregar el servicio Identity a la aplicacion como dependencia
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
+// Url de retorno al acceder
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = new PathString("/Cuentas/Acceso");
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

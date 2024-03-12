@@ -59,16 +59,18 @@ namespace CursoIdentityUdemy.Controllers
 
         // Metodo mostrar formulario de acceso
         [HttpGet]
-        public IActionResult Acceso()
+        public IActionResult Acceso(string returnurl=null)
         {
-
+            ViewData["Returnurl"] = returnurl;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Acceso(LoginViewModel accViewModel)
+        public async Task<IActionResult> Acceso(LoginViewModel accViewModel, string returnurl=null)
         {
+            ViewData["Returnurl"] = returnurl;
+
             // Validamos el modelo osea los datos que ponga en el registro
             if (ModelState.IsValid)
             {
@@ -76,7 +78,8 @@ namespace CursoIdentityUdemy.Controllers
 
                 if (resultado.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    return Redirect(returnurl);
                 }
                 else
                 {
