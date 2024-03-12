@@ -107,5 +107,12 @@ namespace CursoIdentityUdemy.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home"); // Una vez se salga de la aplicacion, va a buscar el index en el home. Se sale de la aplicacion con el metodo signoutasync, destruyo las cookies del navegador, cierra la sesion y redirecciona al home
         }
+
+        // Metodo para olvido de contraseña 
+        [HttpGet]
+        public IActionResult OlvidoPassword()
+        {
+            return View();
+        }
     }
 }
