@@ -79,12 +79,16 @@ namespace CursoIdentityUdemy.Controllers
             // Validamos el modelo osea los datos que ponga en el registro
             if (ModelState.IsValid)
             {
-                var resultado = await _signInManager.PasswordSignInAsync(accViewModel.Email, accViewModel.Password, accViewModel.RememberMe, lockoutOnFailure: false); 
+                var resultado = await _signInManager.PasswordSignInAsync(accViewModel.Email, accViewModel.Password, accViewModel.RememberMe, lockoutOnFailure: true); 
 
                 if (resultado.Succeeded)
                 {
                     //return RedirectToAction("Index", "Home");
                     return LocalRedirect(returnurl);
+                }
+                if (resultado.IsLockedOut)
+                {
+                    return View("Bloqueado");
                 }
                 else
                 {
