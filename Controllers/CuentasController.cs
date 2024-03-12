@@ -21,8 +21,9 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Registro()
+        public async Task<IActionResult> Registro(string returnurl = null)
         {
+            ViewData["Returnurl"] = returnurl;
             RegistrerViewModel registroVM = new RegistrerViewModel();
             return View(registroVM);
         }
@@ -30,8 +31,11 @@ namespace CursoIdentityUdemy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(RegistrerViewModel rgViewModel)
+        public async Task<IActionResult> Registro(RegistrerViewModel rgViewModel, string returnurl = null)
         {
+            ViewData["Returnurl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
+
             // Validamos el modelo osea los datos que ponga en el registro
             if (ModelState.IsValid)
             {
@@ -42,7 +46,8 @@ namespace CursoIdentityUdemy.Controllers
                 {
                     // La persona quede autenticada dentro de la aplicacion
                     await _signInManager.SignInAsync(usuario, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    return LocalRedirect(returnurl); // Para que estén protegidos y no vulneren la aplicacion
                 }
                 ValidarErrores(resultado);
             }
@@ -70,7 +75,7 @@ namespace CursoIdentityUdemy.Controllers
         public async Task<IActionResult> Acceso(LoginViewModel accViewModel, string returnurl=null)
         {
             ViewData["Returnurl"] = returnurl;
-
+            returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
             // Validamos el modelo osea los datos que ponga en el registro
             if (ModelState.IsValid)
             {
@@ -79,7 +84,7 @@ namespace CursoIdentityUdemy.Controllers
                 if (resultado.Succeeded)
                 {
                     //return RedirectToAction("Index", "Home");
-                    return Redirect(returnurl);
+                    return LocalRedirect(returnurl);
                 }
                 else
                 {
