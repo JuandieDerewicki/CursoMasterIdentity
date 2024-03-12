@@ -29,6 +29,7 @@ namespace CursoIdentityUdemy.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registro(RegistrerViewModel rgViewModel)
         {
             // Validamos el modelo osea los datos que ponga en el registro
@@ -65,6 +66,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Acceso(LoginViewModel accViewModel)
         {
             // Validamos el modelo osea los datos que ponga en el registro
@@ -83,6 +85,15 @@ namespace CursoIdentityUdemy.Controllers
                 }
             }
             return View(accViewModel);
+        }
+
+        // Salir o cerrar sesión de la aplicacion (logout)
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Para evitar en nuestros formularios los ataques XXS
+        public async Task<IActionResult> SalirAplicacion()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home"); // Una vez se salga de la aplicacion, va a buscar el index en el home. Se sale de la aplicacion con el metodo signoutasync, destruyo las cookies del navegador, cierra la sesion y redirecciona al home
         }
     }
 }
