@@ -1,5 +1,7 @@
 ﻿using CursoIdentityUdemy.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CursoIdentityUdemy.Controllers
@@ -8,11 +10,13 @@ namespace CursoIdentityUdemy.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IEmailSender _emailSender;
 
-        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender; 
         }
 
         public IActionResult Index()
@@ -114,5 +118,34 @@ namespace CursoIdentityUdemy.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OlvidoPassword(OlvidoPasswordViewModel opViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                var usuario = await _userManager.FindByEmailAsync(opViewModel.Email); // le mandamos el email para que lo encuentre
+                if(usuario == null)
+                {
+                    return RedirectToAction("ConfirmacionOlvidoPassword"); 
+                }
+                var codigo = await _userManager.GeneratePasswordResetTokenAsync(usuario);
+                var urlRetorno = Url.Action("ResetPassword", "Cuentas", new { userId = usuario.Id, code = codigo}, protocol: HttpContext.Request.Scheme);
+
+                await _emailSender.SendEmailAsync(opViewModel.Email, "Recuperar contraseña - Proyecto Identity", "Por favor recupere su contraseña dando click aquí: <a href=\"" + urlRetorno + "\">enlace</a>");
+
+                return RedirectToAction("ConfirmacionOlvidoPassword");
+            }
+            return View(opViewModel);   
+        }
+
+        [HttpGet]
+        [AllowAnonymous] // HACE PARTE DE LA AUTORIZACION
+        public IActionResult ConfirmacionOlvidoPassword()
+        {
+            return View();  
+        }
+
     }
 }
