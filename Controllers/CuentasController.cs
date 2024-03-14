@@ -153,5 +153,34 @@ namespace CursoIdentityUdemy.Controllers
         {
             return code == null ? View("Error") : View(); // Si viene codigo osea que no es null, osea que viene token retorna a la vista normal y si no a la vista error
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Para proteger las peticiones HTTPOST
+        public async Task<IActionResult> ResetPassword(RecuperaPasswordViewModel rpViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var usuario = await _userManager.FindByEmailAsync(rpViewModel.Email); // le mandamos el email para que lo encuentre
+                if (usuario == null)
+                {
+                    return RedirectToAction("ConfirmacionRecuperaPassword");
+                }
+
+                var resultado = await _userManager.ResetPasswordAsync(usuario, rpViewModel.Code, rpViewModel.Password);
+                if (resultado.Succeeded)
+                {
+                    RedirectToAction("ConfirmacionRecuperaPassword");
+                }
+
+                ValidarErrores(resultado);  
+            }
+            return View(rpViewModel); // normal y si no a la vista error
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmacionRecuperaPassword()
+        {
+            return View();
+        }
     }
 }
