@@ -69,3 +69,9 @@ C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\obj\Debug\net6.0\ref
 C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\obj\Debug\net6.0\CursoIdentityUdemy.pdb
 C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\obj\Debug\net6.0\CursoIdentityUdemy.genruntimeconfig.cache
 C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\obj\Debug\net6.0\ref\CursoIdentityUdemy.dll
+C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\MailKit.dll
+C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\MimeKit.dll
+C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\obj\Debug\net6.0\CursoIdentityUdemy.MvcApplicationPartsAssemblyInfo.cs

@@ -1,7 +1,10 @@
 using CursoIdentityUdemy.Datos;
+using CursoIdentityUdemy.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +31,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 // Se agrega IEmailSender
-builder.Services.AddTransient<IEmailSender, IEmailSender>();
+builder.Services.AddTransient<IEmailSender, MailSender>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

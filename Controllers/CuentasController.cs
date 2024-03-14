@@ -147,5 +147,11 @@ namespace CursoIdentityUdemy.Controllers
             return View();  
         }
 
+        // Funcionalidad para recuperar contraseña
+        [HttpGet]
+        public IActionResult ResetPassword(string code=null)
+        {
+            return code == null ? View("Error") : View(); // Si viene codigo osea que no es null, osea que viene token retorna a la vista normal y si no a la vista error
+        }
     }
 }
