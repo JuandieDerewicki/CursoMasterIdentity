@@ -48,6 +48,10 @@ namespace CursoIdentityUdemy.Controllers
 
                 if(resultado.Succeeded)
                 {
+                    //Implementacion de confirmacion de email en el registro
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
+                    var urlRetorno = Url.Action("ConfirmarEmail", "Cuentas", new { userId = usuario.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    await _emailSender.SendEmailAsync(rgViewModel.Email, "Confirmar su cuenta - Proyecto Identity", "Por favor confirme su cuenta dando click aquí: <a href=\"" + urlRetorno + "\">enlace</a>");
                     // La persona quede autenticada dentro de la aplicacion
                     await _signInManager.SignInAsync(usuario, isPersistent: false);
                     //return RedirectToAction("Index", "Home");
@@ -149,6 +153,7 @@ namespace CursoIdentityUdemy.Controllers
 
         // Funcionalidad para recuperar contraseña
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ResetPassword(string code=null)
         {
             return code == null ? View("Error") : View(); // Si viene codigo osea que no es null, osea que viene token retorna a la vista normal y si no a la vista error
@@ -169,7 +174,7 @@ namespace CursoIdentityUdemy.Controllers
                 var resultado = await _userManager.ResetPasswordAsync(usuario, rpViewModel.Code, rpViewModel.Password);
                 if (resultado.Succeeded)
                 {
-                    RedirectToAction("ConfirmacionRecuperaPassword");
+                    return RedirectToAction("ConfirmacionRecuperaPassword");
                 }
 
                 ValidarErrores(resultado);  
@@ -178,9 +183,30 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ConfirmacionRecuperaPassword()
         {
             return View();
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmarEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            } 
+
+            var usuario = await _userManager.FindByIdAsync(userId);  // Obtenemos el usuario
+
+            if(usuario == null) // Valido si existe en la bd 
+            {
+                return View("Error");
+            }
+
+            var resultado = await _userManager.ConfirmEmailAsync(usuario, code);
+            return View(resultado.Succeeded ? "ConfirmarEmail" : "Error");
         }
     }
 }
