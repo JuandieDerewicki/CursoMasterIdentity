@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "YFhyuhdWrDf5l7xT47EZOY7eoVXDZpP9y7bCxKw+Ph0uvYRdbBN9Dyv9AyVQB6X5PT+sb0R64qze5ujT3YKqmA==",
+  "dgSpecHash": "meLIDgk1SCpU2SC6pd4NocvzY/2bI85UblLGMmBlHl9o/afJtOUoC6TrGeM9/9tgEtYJnYbjBLiQqyvZz3Jjtw==",
   "success": true,
   "projectFilePath": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\CursoIdentityUdemy.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bocaj\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\bocaj\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",
+    "C:\\Users\\bocaj\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\6.0.1\\microsoft.aspnetcore.authentication.facebook.6.0.1.nupkg.sha512",
     "C:\\Users\\bocaj\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.1\\microsoft.aspnetcore.cryptography.internal.6.0.1.nupkg.sha512",
     "C:\\Users\\bocaj\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.1\\microsoft.aspnetcore.cryptography.keyderivation.6.0.1.nupkg.sha512",
     "C:\\Users\\bocaj\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.1\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.1.nupkg.sha512",
