@@ -1,4 +1,6 @@
 ﻿@model LoginViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager;
 
 @{
     ViewData["Tittle"] = "Acceso de usuario";
@@ -8,13 +10,12 @@
 <div class="card">
     <div class="card-body">
         <h3 class="card-title text-center">Acceso de usuario</h3>
-        <form asp-controller="Cuentas" asp-action="Acceso" asp-route-returnurl="@ViewData["Returnurl"]" method="post" role="form">
-            <div class="text-danger" asp-validation-summary="All"></div>
 
             <div class="row mt-4">
-
+                  <form asp-controller="Cuentas" asp-action="Acceso" asp-route-returnurl="@ViewData["Returnurl"]" method="post" role="form">
+                  <div class="text-danger" asp-validation-summary="All"></div>
                 <div class="col-sm-6">
-
+                
                     <div class="mb-3">
                         <label asp-for="Email" class="col-md-2"></label>
                         <input asp-for="Email" class="form-control" placeholder="Ingresa tu email" />
@@ -36,22 +37,40 @@
                         </div>
                     </div>
 
-                </div>
-
-                <div class="col-sm-4 offset-2">
-                   <h3>Aqui acceso aplicaciones externas</h3>
-                </div>
-
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-success w-100 btn-lg">Acceder <i class=""></i></button>
+                            <p><a asp-action="Registro">Registrarse como un nuevo usuario</a></p> <!--Hipervinculo que nos lleva al Registro-->
+                            <p><a asp-action="OlvidoPassword">¿Olvidaste tu contraseña?</a></p>
+                        </div>
+                    </div>
+                </form>
             </div>
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <button type="submit" class="btn btn-success w-100 btn-lg">Acceder <i class=""></i></button>
-                    <p><a asp-action="Registro">Registrarse como un nuevo usuario</a></p> <!--Hipervinculo que nos lleva al Registro-->
-                    <p><a asp-action="OlvidoPassword">¿Olvidaste tu contraseña?</a></p>
-                </div>
+        @{
+            var esquemas = await signInManager.GetExternalAuthenticationSchemesAsync();
+            var proveedoresAcceso = esquemas.ToList();
+        }
+
+        @if(proveedoresAcceso.Count() > 0)
+        {
+            <div class="col-sm-4 offset-2">
+                <h3>Acceso con otras cuentas</h3>
+
+                <form asp-controller="Cuentas" asp-action="AccesoExterno" asp-route-returnurl="@ViewData["Returnurl"]" method="post" >
+                    <div class="mt-4">
+                        <p>
+                            @foreach (var proveedor in proveedoresAcceso)
+                            {
+                                <button type="submit" class="btn btn-primary w-100" name="proveedor" value="@proveedor.Name" title="Acceda usando su cuenta @proveedor.Name" >@proveedor.Name</button>
+                            }
+                        </p>
+                    </div>
+                </form>
             </div>
-        </form>
+        }
+
+        
     </div>
 </div>
 

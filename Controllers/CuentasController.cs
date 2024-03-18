@@ -208,5 +208,18 @@ namespace CursoIdentityUdemy.Controllers
             var resultado = await _userManager.ConfirmEmailAsync(usuario, code);
             return View(resultado.Succeeded ? "ConfirmarEmail" : "Error");
         }
+
+
+        // Configuracion de acceso externo: facebook, google, twitter, etc
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult AccesoExterno(string proveedor, string returnurl = null)
+        {
+            var urlRedireccion = Url.Action("AccesoExternoCallback", "Cuentas", new { ReturnUrl = returnurl });
+            var propiedades = _signInManager.ConfigureExternalAuthenticationProperties(proveedor, urlRedireccion);
+            return Challenge(propiedades, proveedor);
+        }
+
     }
 }
