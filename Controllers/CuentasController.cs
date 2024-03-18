@@ -225,7 +225,7 @@ namespace CursoIdentityUdemy.Controllers
         [HttpGet]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async IActionResult AccesoExternoCallback(string returnurl = null, string error = null)
+        public async Task<IActionResult> AccesoExternoCallback(string returnurl = null, string error = null)
         {
             returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
             if(error != null)
@@ -257,6 +257,41 @@ namespace CursoIdentityUdemy.Controllers
                 return View("ConfirmacionAccesoExterno", new ConfirmacionAccesoExternoViewModel { Email = email, Name = nombre });
             }
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmacionAccesoExterno(ConfirmacionAccesoExternoViewModel caeViewModel, string returnurl = null)
+        {
+            returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
+            
+            if(ModelState.IsValid)
+            {
+                // Obtener la informacion del usuario del proveedor externo
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if(info == null)
+                {
+                    return View("Error");
+                }
+
+                var usuario = new AppUsuario { UserName = caeViewModel.Email, Email = caeViewModel.Email, Nombre = caeViewModel.Name };
+                var resultado = await _userManager.CreateAsync(usuario);
+                if (resultado.Succeeded)
+                {
+                    resultado = await _userManager.AddLoginAsync(usuario, info);
+                    if (resultado.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(usuario, isPersistent: false);
+                        await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+                        return LocalRedirect(returnurl);
+                    }
+                }
+                ValidarErrores(resultado);
+            }
+            ViewData["ReturnUrl"] = returnurl;
+            return View(caeViewModel);
+        }
+
 
     }
 }
