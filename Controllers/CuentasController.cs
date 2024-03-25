@@ -17,7 +17,7 @@ namespace CursoIdentityUdemy.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender; 
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -47,7 +47,7 @@ namespace CursoIdentityUdemy.Controllers
                 var usuario = new AppUsuario { UserName = rgViewModel.Email, Email = rgViewModel.Email, Nombre = rgViewModel.Nombre, Url = rgViewModel.Url, CodigoPais = rgViewModel.CodigoPais, Telefono = rgViewModel.Telefono, Pais = rgViewModel.Pais, Ciudad = rgViewModel.Ciudad, Direccion = rgViewModel.Direccion, FechaNacimiento = rgViewModel.FechaNacimiento, Estado = rgViewModel.Estado };
                 var resultado = await _userManager.CreateAsync(usuario, rgViewModel.Password); // con esto dos ya crea el usuario
 
-                if(resultado.Succeeded)
+                if (resultado.Succeeded)
                 {
                     //Implementacion de confirmacion de email en el registro
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
@@ -73,7 +73,7 @@ namespace CursoIdentityUdemy.Controllers
 
         // Metodo mostrar formulario de acceso
         [HttpGet]
-        public IActionResult Acceso(string returnurl=null)
+        public IActionResult Acceso(string returnurl = null)
         {
             ViewData["Returnurl"] = returnurl;
             return View();
@@ -81,14 +81,14 @@ namespace CursoIdentityUdemy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Acceso(LoginViewModel accViewModel, string returnurl=null)
+        public async Task<IActionResult> Acceso(LoginViewModel accViewModel, string returnurl = null)
         {
             ViewData["Returnurl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
             // Validamos el modelo osea los datos que ponga en el registro
             if (ModelState.IsValid)
             {
-                var resultado = await _signInManager.PasswordSignInAsync(accViewModel.Email, accViewModel.Password, accViewModel.RememberMe, lockoutOnFailure: true); 
+                var resultado = await _signInManager.PasswordSignInAsync(accViewModel.Email, accViewModel.Password, accViewModel.RememberMe, lockoutOnFailure: true);
 
                 if (resultado.Succeeded)
                 {
@@ -128,34 +128,34 @@ namespace CursoIdentityUdemy.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OlvidoPassword(OlvidoPasswordViewModel opViewModel)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var usuario = await _userManager.FindByEmailAsync(opViewModel.Email); // le mandamos el email para que lo encuentre
-                if(usuario == null)
+                if (usuario == null)
                 {
-                    return RedirectToAction("ConfirmacionOlvidoPassword"); 
+                    return RedirectToAction("ConfirmacionOlvidoPassword");
                 }
                 var codigo = await _userManager.GeneratePasswordResetTokenAsync(usuario);
-                var urlRetorno = Url.Action("ResetPassword", "Cuentas", new { userId = usuario.Id, code = codigo}, protocol: HttpContext.Request.Scheme);
+                var urlRetorno = Url.Action("ResetPassword", "Cuentas", new { userId = usuario.Id, code = codigo }, protocol: HttpContext.Request.Scheme);
 
                 await _emailSender.SendEmailAsync(opViewModel.Email, "Recuperar contraseña - Proyecto Identity", "Por favor recupere su contraseña dando click aquí: <a href=\"" + urlRetorno + "\">enlace</a>");
 
                 return RedirectToAction("ConfirmacionOlvidoPassword");
             }
-            return View(opViewModel);   
+            return View(opViewModel);
         }
 
         [HttpGet]
         [AllowAnonymous] // HACE PARTE DE LA AUTORIZACION
         public IActionResult ConfirmacionOlvidoPassword()
         {
-            return View();  
+            return View();
         }
 
         // Funcionalidad para recuperar contraseña
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code=null)
+        public IActionResult ResetPassword(string code = null)
         {
             return code == null ? View("Error") : View(); // Si viene codigo osea que no es null, osea que viene token retorna a la vista normal y si no a la vista error
         }
@@ -178,7 +178,7 @@ namespace CursoIdentityUdemy.Controllers
                     return RedirectToAction("ConfirmacionRecuperaPassword");
                 }
 
-                ValidarErrores(resultado);  
+                ValidarErrores(resultado);
             }
             return View(rpViewModel); // normal y si no a la vista error
         }
@@ -197,11 +197,11 @@ namespace CursoIdentityUdemy.Controllers
             if (userId == null || code == null)
             {
                 return View("Error");
-            } 
+            }
 
             var usuario = await _userManager.FindByIdAsync(userId);  // Obtenemos el usuario
 
-            if(usuario == null) // Valido si existe en la bd 
+            if (usuario == null) // Valido si existe en la bd 
             {
                 return View("Error");
             }
@@ -228,13 +228,13 @@ namespace CursoIdentityUdemy.Controllers
         public async Task<IActionResult> AccesoExternoCallback(string returnurl = null, string error = null)
         {
             returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
-            if(error != null)
+            if (error != null)
             {
                 ModelState.AddModelError(string.Empty, $"Error en el acceso externo {error}");
                 return View(nameof(Acceso));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
-            if(info == null)
+            if (info == null)
             {
                 return RedirectToAction(nameof(Acceso));
             }
@@ -264,12 +264,12 @@ namespace CursoIdentityUdemy.Controllers
         public async Task<IActionResult> ConfirmacionAccesoExterno(ConfirmacionAccesoExternoViewModel caeViewModel, string returnurl = null)
         {
             returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
-            
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
                 // Obtener la informacion del usuario del proveedor externo
                 var info = await _signInManager.GetExternalLoginInfoAsync();
-                if(info == null)
+                if (info == null)
                 {
                     return View("Error");
                 }
@@ -294,12 +294,13 @@ namespace CursoIdentityUdemy.Controllers
 
         // Autenticacion de dos factores
         [HttpGet]
-        public async Task<IActionResult> ActivarAutenticado()
+        public async Task<IActionResult> ActivarAutenticador()
         {
             var usuario = await _userManager.GetUserAsync(User);
             await _userManager.ResetAuthenticatorKeyAsync(usuario);
-            var token = await _userManager.GetAuthenticatorKeyAsync(usuario);   
+            var token = await _userManager.GetAuthenticatorKeyAsync(usuario);
             var adfModel = new AutenticacionDosFactoresViewModel() { Token = token };
             return View(adfModel);
+        }
     }
 }
