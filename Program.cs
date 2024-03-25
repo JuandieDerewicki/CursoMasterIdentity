@@ -37,6 +37,13 @@ builder.Services.AddAuthentication().AddFacebook(options =>
     options.AppSecret = "219d65fb4e501b3bf8f7cad0f0611544"; 
 });
 
+// Agregar autenticacion de google 
+//builder.Services.AddAuthentication().AddGoogle(options =>
+//{
+//    options.ClientId = ""; // BUSCAR CON GOOGLE CLOUD
+//    options.ClientSecret = ""; // BUSCAR CON GOOGLE CLOUD
+//});
+
 // Se agrega IEmailSender
 builder.Services.AddTransient<IEmailSender, MailSender>();
 

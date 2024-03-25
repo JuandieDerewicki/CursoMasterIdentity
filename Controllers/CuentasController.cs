@@ -292,6 +292,14 @@ namespace CursoIdentityUdemy.Controllers
             return View(caeViewModel);
         }
 
-
+        // Autenticacion de dos factores
+        [HttpGet]
+        public async Task<IActionResult> ActivarAutenticado()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            await _userManager.ResetAuthenticatorKeyAsync(usuario);
+            var token = await _userManager.GetAuthenticatorKeyAsync(usuario);   
+            var adfModel = new AutenticacionDosFactoresViewModel() { Token = token };
+            return View(adfModel);
     }
 }

@@ -76,3 +76,4 @@ C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\Mim
 C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\BouncyCastle.Crypto.dll
 C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\obj\Debug\net6.0\CursoIdentityUdemy.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Facebook.dll
+C:\Users\bocaj\source\repos\CursosPlatzi\CursoIdentityUdemy\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
