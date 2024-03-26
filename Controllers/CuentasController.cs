@@ -99,6 +99,11 @@ namespace CursoIdentityUdemy.Controllers
                 {
                     return View("Bloqueado");
                 }
+                // Para autenticacion de dos factores
+                if (resultado.RequiresTwoFactor)
+                {
+                    return RedirectToAction(nameof(VerificarCodigoAutenticador), new { returnurl, accViewModel.RememberMe });
+                }
                 else
                 {
                     ModelState.AddModelError(String.Empty, "Acceso inválido");
@@ -246,6 +251,12 @@ namespace CursoIdentityUdemy.Controllers
                 // Actualizar tokens de acceso
                 await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
                 return LocalRedirect(returnurl);
+            }
+
+            // Para autenticacion de dos factores
+            if(resultado.RequiresTwoFactor)
+            {
+                return RedirectToAction("VerificarCodigoAutenticador", new { returnurl = returnurl });
             }
             else
             {
