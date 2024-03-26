@@ -302,5 +302,30 @@ namespace CursoIdentityUdemy.Controllers
             var adfModel = new AutenticacionDosFactoresViewModel() { Token = token };
             return View(adfModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ActivarAutenticador(AutenticacionDosFactoresViewModel adfViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                var usuario = await _userManager.GetUserAsync(User);
+                var succeed = await _userManager.VerifyTwoFactorTokenAsync(usuario, _userManager.Options.Tokens.AuthenticatorTokenProvider, adfViewModel.Code);
+                if(succeed)
+                {
+                    await _userManager.SetTwoFactorEnabledAsync(usuario, true);
+                }
+                else
+                {
+                    ModelState.AddModelError("Verificar", "Su autenticación de dos factores no ha sido validada");
+                }
+            }
+            return RedirectToAction(nameof(ConfirmacionAutenticador));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmacionAutenticador()
+        {
+            return View();
+        }
     }
 }
