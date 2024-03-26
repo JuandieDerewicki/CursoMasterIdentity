@@ -338,5 +338,19 @@ namespace CursoIdentityUdemy.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> VerificarCodigoAutenticador(bool recordarDatos, string returnurl = null)
+        {
+            var usuario = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if(usuario == null)
+            {
+                return View("Error");   
+            }
+            ViewData["ReturnUrl"] = returnurl;
+            return View(new VerificarAutenticadorViewModel { ReturnUrl = returnurl, RecordarDatos = recordarDatos });   
+        }
+
+        
     }
 }
