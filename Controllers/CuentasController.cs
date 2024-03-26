@@ -322,6 +322,16 @@ namespace CursoIdentityUdemy.Controllers
             return View(adfModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EliminarAutenticador()
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+            await _userManager.ResetAuthenticatorKeyAsync(usuario);
+            await _userManager.SetTwoFactorEnabledAsync(usuario, false);
+   
+            return RedirectToAction(nameof(Index), "Home");
+        }
+
         [HttpPost]
         public async Task<IActionResult> ActivarAutenticador(AutenticacionDosFactoresViewModel adfViewModel)
         {
