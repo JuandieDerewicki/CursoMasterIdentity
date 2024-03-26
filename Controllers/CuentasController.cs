@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 namespace CursoIdentityUdemy.Controllers
 {
@@ -12,12 +13,14 @@ namespace CursoIdentityUdemy.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        public readonly UrlEncoder _urlEncoder;
 
-        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender)
+        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender, UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _urlEncoder = urlEncoder;
         }
 
         public IActionResult Index()
@@ -307,10 +310,15 @@ namespace CursoIdentityUdemy.Controllers
         [HttpGet]
         public async Task<IActionResult> ActivarAutenticador()
         {
+            string formatoUrlAutenticador = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+
             var usuario = await _userManager.GetUserAsync(User);
             await _userManager.ResetAuthenticatorKeyAsync(usuario);
             var token = await _userManager.GetAuthenticatorKeyAsync(usuario);
-            var adfModel = new AutenticacionDosFactoresViewModel() { Token = token };
+
+            // Habilitar codigo QR
+            string urlAutenticador = string.Format(formatoUrlAutenticador, _urlEncoder.Encode("ProyectoIdentity"), _urlEncoder.Encode(usuario.Email), token);
+            var adfModel = new AutenticacionDosFactoresViewModel() { Token = token, UrlCodigoQr = urlAutenticador };
             return View(adfModel);
         }
 
@@ -327,7 +335,8 @@ namespace CursoIdentityUdemy.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Verificar", "Su autenticación de dos factores no ha sido validada");
+                    ModelState.AddModelError("Error", "Su autenticación de dos factores no ha sido validada");
+                    return View(adfViewModel);
                 }
             }
             return RedirectToAction(nameof(ConfirmacionAutenticador));
@@ -361,7 +370,7 @@ namespace CursoIdentityUdemy.Controllers
             {
                 return View(vaViewModel);
             }
-            var resultado = await _signInManager.TwoFactorAuthenticatorSignInAsync(vaViewModel.Code, vaViewModel.RecordarDatos, rememberClient: false);
+            var resultado = await _signInManager.TwoFactorAuthenticatorSignInAsync(vaViewModel.Code, vaViewModel.RecordarDatos, rememberClient: false); // el remememberClient es importante cambiar si queremos que no haga siempre la autenticacion de dos factores
             if(resultado.Succeeded)
             {
                 return LocalRedirect(vaViewModel.ReturnUrl);

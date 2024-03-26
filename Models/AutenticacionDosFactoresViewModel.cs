@@ -11,5 +11,8 @@ namespace CursoIdentityUdemy.Models
 
         // Para el registro
         public string Token { get; set; }
+
+        // Para codigo QR
+        public string UrlCodigoQr {  get; set; }    
     }
 }
