@@ -351,6 +351,32 @@ namespace CursoIdentityUdemy.Controllers
             return View(new VerificarAutenticadorViewModel { ReturnUrl = returnurl, RecordarDatos = recordarDatos });   
         }
 
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> VerificarCodigoAutenticador(VerificarAutenticadorViewModel vaViewModel)
+        {
+            vaViewModel.ReturnUrl = vaViewModel.ReturnUrl ?? Url.Content("~/");
+            if(!ModelState.IsValid)
+            {
+                return View(vaViewModel);
+            }
+            var resultado = await _signInManager.TwoFactorAuthenticatorSignInAsync(vaViewModel.Code, vaViewModel.RecordarDatos, rememberClient: false);
+            if(resultado.Succeeded)
+            {
+                return LocalRedirect(vaViewModel.ReturnUrl);
+            }
+            if (resultado.IsLockedOut)
+            {
+                return View("Bloqueado");
+            }
+            else
+            {
+                ModelState.AddModelError(String.Empty, "Código Inválido");
+                return View(vaViewModel);
+            }
+        }
+
+
     }
 }
