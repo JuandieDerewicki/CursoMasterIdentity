@@ -32,7 +32,7 @@ namespace CursoIdentityUdemy.Controllers
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Privacy()
         {
             return View();

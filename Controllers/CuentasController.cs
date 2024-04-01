@@ -515,6 +515,14 @@ namespace CursoIdentityUdemy.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Denegado(string returnurl = null)
+        {
+            ViewData["Returnurl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
+            return View();
+        }
 
     }
 }
