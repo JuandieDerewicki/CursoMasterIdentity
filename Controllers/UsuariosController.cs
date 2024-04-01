@@ -1,10 +1,12 @@
 ﻿using CursoIdentityUdemy.Datos;
 using CursoIdentityUdemy.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CursoIdentityUdemy.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
