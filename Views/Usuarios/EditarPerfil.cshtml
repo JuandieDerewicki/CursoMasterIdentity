@@ -26,7 +26,7 @@
 
                     <div class="mb-3">
                         <label asp-for="Email" class="col-md-2"></label>
-                        <input asp-for="Email" class="form-control" placeholder="Ingresa tu email" />
+                        <input asp-for="Email" class="form-control" disabled />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
@@ -72,7 +72,7 @@
 
                     <div class="mb-3">
                         <label asp-for="FechaNacimiento" class="col-md-4"></label>
-                        <input type="text" name="FechaNacimiento" class="form-control" id="datepicker" placeholder="Ejemplo: 1990-10-05" />
+                        <input type="text" asp-for="FechaNacimiento" class="form-control" id="datepicker" placeholder="Ejemplo: 1990-10-05" />
                         <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                     </div>
 
