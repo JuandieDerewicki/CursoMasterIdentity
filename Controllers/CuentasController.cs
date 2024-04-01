@@ -12,16 +12,18 @@ namespace CursoIdentityUdemy.Controllers
     public class CuentasController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
         public readonly UrlEncoder _urlEncoder;
 
-        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender, UrlEncoder urlEncoder)
+        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender, UrlEncoder urlEncoder, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _urlEncoder = urlEncoder;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -34,6 +36,19 @@ namespace CursoIdentityUdemy.Controllers
         [HttpGet]
         public async Task<IActionResult> Registro(string returnurl = null)
         {
+            // Para la creacion de los roles
+            if(!await _roleManager.RoleExistsAsync("Administrador"))
+            {
+                // Creacion de rol usuario administrador
+                await _roleManager.CreateAsync(new IdentityRole("Administrador"));
+            }
+            if (!await _roleManager.RoleExistsAsync("Registrado"))
+            {
+                // Creacion de rol usuario administrador
+                await _roleManager.CreateAsync(new IdentityRole("Registrado"));
+            }
+
+
             ViewData["Returnurl"] = returnurl;
             RegistrerViewModel registroVM = new RegistrerViewModel();
             return View(registroVM);
