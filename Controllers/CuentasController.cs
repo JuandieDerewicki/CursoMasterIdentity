@@ -34,6 +34,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Registro(string returnurl = null)
         {
             // Para la creacion de los roles
@@ -59,6 +60,59 @@ namespace CursoIdentityUdemy.Controllers
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public async Task<IActionResult> Registro(RegistrerViewModel rgViewModel, string returnurl = null)
+        {
+            ViewData["Returnurl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
+
+            // Validamos el modelo osea los datos que ponga en el registro
+            if (ModelState.IsValid)
+            {
+                var usuario = new AppUsuario { UserName = rgViewModel.Email, Email = rgViewModel.Email, Nombre = rgViewModel.Nombre, Url = rgViewModel.Url, CodigoPais = rgViewModel.CodigoPais, Telefono = rgViewModel.Telefono, Pais = rgViewModel.Pais, Ciudad = rgViewModel.Ciudad, Direccion = rgViewModel.Direccion, FechaNacimiento = rgViewModel.FechaNacimiento, Estado = rgViewModel.Estado };
+                var resultado = await _userManager.CreateAsync(usuario, rgViewModel.Password); // con esto dos ya crea el usuario
+
+                if (resultado.Succeeded)
+                {
+                    // Asignacion del usuario que se registra al rol
+                    await _userManager.AddToRoleAsync(usuario, "Registrado");
+                    //Implementacion de confirmacion de email en el registro
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
+                    var urlRetorno = Url.Action("ConfirmarEmail", "Cuentas", new { userId = usuario.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    await _emailSender.SendEmailAsync(rgViewModel.Email, "Confirmar su cuenta - Proyecto Identity", "Por favor confirme su cuenta dando click aquí: <a href=\"" + urlRetorno + "\">enlace</a>");
+                    // La persona quede autenticada dentro de la aplicacion
+                    await _signInManager.SignInAsync(usuario, isPersistent: false);
+                    //return RedirectToAction("Index", "Home");
+                    return LocalRedirect(returnurl); // Para que estén protegidos y no vulneren la aplicacion
+                }
+                ValidarErrores(resultado);
+            }
+            return View(rgViewModel);
+        }
+
+        // Registro especial para solo los administradores
+        [HttpGet]
+        public async Task<IActionResult> RegistroAdministrador(string returnurl = null)
+        {
+            // Para la creacion de los roles
+            if (!await _roleManager.RoleExistsAsync("Administrador"))
+            {
+                // Creacion de rol usuario administrador
+                await _roleManager.CreateAsync(new IdentityRole("Administrador"));
+            }
+            if (!await _roleManager.RoleExistsAsync("Registrado"))
+            {
+                // Creacion de rol usuario administrador
+                await _roleManager.CreateAsync(new IdentityRole("Registrado"));
+            }
+
+
+            ViewData["Returnurl"] = returnurl;
+            RegistrerViewModel registroVM = new RegistrerViewModel();
+            return View(registroVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegistroAdministrador(RegistrerViewModel rgViewModel, string returnurl = null)
         {
             ViewData["Returnurl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
