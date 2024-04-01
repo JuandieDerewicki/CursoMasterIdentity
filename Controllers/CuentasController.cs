@@ -8,6 +8,7 @@ using System.Text.Encodings.Web;
 
 namespace CursoIdentityUdemy.Controllers
 {
+    [Authorize]
     public class CuentasController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -23,6 +24,8 @@ namespace CursoIdentityUdemy.Controllers
             _urlEncoder = urlEncoder;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -39,6 +42,7 @@ namespace CursoIdentityUdemy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Registro(RegistrerViewModel rgViewModel, string returnurl = null)
         {
             ViewData["Returnurl"] = returnurl;
@@ -66,6 +70,8 @@ namespace CursoIdentityUdemy.Controllers
             return View(rgViewModel);
         }
 
+        // Manejo de errores
+        [AllowAnonymous]
         private void ValidarErrores(IdentityResult resultado)
         {
             foreach (var error in resultado.Errors)
@@ -76,6 +82,7 @@ namespace CursoIdentityUdemy.Controllers
 
         // Metodo mostrar formulario de acceso
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Acceso(string returnurl = null)
         {
             ViewData["Returnurl"] = returnurl;
@@ -84,6 +91,7 @@ namespace CursoIdentityUdemy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Acceso(LoginViewModel accViewModel, string returnurl = null)
         {
             ViewData["Returnurl"] = returnurl;
@@ -127,6 +135,7 @@ namespace CursoIdentityUdemy.Controllers
 
         // Metodo para olvido de contraseña 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult OlvidoPassword()
         {
             return View();
@@ -134,6 +143,7 @@ namespace CursoIdentityUdemy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> OlvidoPassword(OlvidoPasswordViewModel opViewModel)
         {
             if (ModelState.IsValid)
@@ -170,6 +180,7 @@ namespace CursoIdentityUdemy.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Para proteger las peticiones HTTPOST
+        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(RecuperaPasswordViewModel rpViewModel)
         {
             if (ModelState.IsValid)
@@ -200,6 +211,7 @@ namespace CursoIdentityUdemy.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ConfirmarEmail(string userId, string code)
         {
             if (userId == null || code == null)
@@ -359,6 +371,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> VerificarCodigoAutenticador(bool recordarDatos, string returnurl = null)
         {
             var usuario = await _signInManager.GetTwoFactorAuthenticationUserAsync();
