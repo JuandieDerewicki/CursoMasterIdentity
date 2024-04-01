@@ -71,6 +71,8 @@ namespace CursoIdentityUdemy.Controllers
 
                 if (resultado.Succeeded)
                 {
+                    // Asignacion del usuario que se registra al rol
+                    await _userManager.AddToRoleAsync(usuario, "Registrado");
                     //Implementacion de confirmacion de email en el registro
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
                     var urlRetorno = Url.Action("ConfirmarEmail", "Cuentas", new { userId = usuario.Id, code = code }, protocol: HttpContext.Request.Scheme);
