@@ -98,6 +98,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcQ2FtYmlhclBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bocaj/source/repos/CursosPlatzi/CursoIdentityUdemy/Views/Usuarios/ConfirmacionCambioPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcQ29uZmlybWFjaW9uQ2FtYmlvUGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bocaj/source/repos/CursosPlatzi/CursoIdentityUdemy/Views/Usuarios/EditarPerfil.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcRWRpdGFyUGVyZmlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

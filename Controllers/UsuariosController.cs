@@ -38,6 +38,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditarPerfil(AppUsuario appusuario)
         {
             if(ModelState.IsValid)
@@ -61,6 +62,38 @@ namespace CursoIdentityUdemy.Controllers
 
         // Cambiar contraseña cuando el usuario está autenticado
         public IActionResult CambiarPassword(string id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarPassword(CambiarPasswordViewModel cpViewModel, string email)
+        {
+            if (ModelState.IsValid)
+            {
+                var usuario = await _userManager.FindByEmailAsync(email);
+                if(usuario == null)
+                {
+                    return RedirectToAction("Error");
+                }
+                // Creamos un token que nos sirva para resetear la contraseña
+                var token = await _userManager.GeneratePasswordResetTokenAsync(usuario);
+
+                var resultado = await _userManager.ResetPasswordAsync(usuario, token, cpViewModel.Password);
+                if(resultado.Succeeded)
+                {
+                    return RedirectToAction("ConfirmacionCambioPassword");
+                }
+                else
+                {
+                    return View(cpViewModel);
+                }
+            }
+            return View();
+        }
+
+        public IActionResult ConfirmacionCambioPassword(string id)
         {
             return View();
         }
