@@ -58,5 +58,11 @@ namespace CursoIdentityUdemy.Controllers
             }
             return View();
         }
+
+        // Cambiar contraseña cuando el usuario está autenticado
+        public IActionResult CambiarPassword(string id)
+        {
+            return View();
+        }
     }
 }
