@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace CursoIdentityUdemy.Models
 {
@@ -37,6 +38,13 @@ namespace CursoIdentityUdemy.Models
 
         [Required(ErrorMessage = "El estado es obligatorio")]
         public bool Estado { get; set; }
+
+        // Para seleccion de roles
+        [Display(Name = "Seleccionar rol")]
+        public IEnumerable<SelectList> ListaRoles { get; set; }
+
+        [Display(Name = "Rol seleccionado")]
+        public string RolSeleccionado { get; set; }
 
     }
 }

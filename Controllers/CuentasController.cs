@@ -1,8 +1,10 @@
 ﻿using CursoIdentityUdemy.Models;
+using CursoIdentityUdemy.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
@@ -92,53 +94,86 @@ namespace CursoIdentityUdemy.Controllers
         [HttpGet]
         public async Task<IActionResult> RegistroAdministrador(string returnurl = null)
         {
-            // Para la creacion de los roles
             if (!await _roleManager.RoleExistsAsync("Administrador"))
             {
-                // Creacion de rol usuario administrador
                 await _roleManager.CreateAsync(new IdentityRole("Administrador"));
             }
             if (!await _roleManager.RoleExistsAsync("Registrado"))
             {
-                // Creacion de rol usuario administrador
                 await _roleManager.CreateAsync(new IdentityRole("Registrado"));
             }
+            List<SelectListItem> listaRoles = new List<SelectListItem>();
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Registrado",
+                Text = "Registrado"
+            });
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Administrador",
+                Text = "Administrador"
+            });
 
 
-            ViewData["Returnurl"] = returnurl;
-            RegistrerViewModel registroVM = new RegistrerViewModel();
-            return View(registroVM);
+            RegistrerViewModel registroVm = new RegistrerViewModel()
+            {
+
+                ListaRoles = (IEnumerable<SelectList>)listaRoles
+
+            };
+            ViewData["ReturnUrl"] = returnurl;
+
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegistroAdministrador(RegistrerViewModel rgViewModel, string returnurl = null)
+        public async Task<IActionResult> RegistroAdministrador(RegistrerViewModel vmRegistro, string returnurl = null)
         {
-            ViewData["Returnurl"] = returnurl;
-            returnurl = returnurl ?? Url.Content("~/"); // Si no tiene ningun returnurl va al incio
-
-            // Validamos el modelo osea los datos que ponga en el registro
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var usuario = new AppUsuario { UserName = rgViewModel.Email, Email = rgViewModel.Email, Nombre = rgViewModel.Nombre, Url = rgViewModel.Url, CodigoPais = rgViewModel.CodigoPais, Telefono = rgViewModel.Telefono, Pais = rgViewModel.Pais, Ciudad = rgViewModel.Ciudad, Direccion = rgViewModel.Direccion, FechaNacimiento = rgViewModel.FechaNacimiento, Estado = rgViewModel.Estado };
-                var resultado = await _userManager.CreateAsync(usuario, rgViewModel.Password); // con esto dos ya crea el usuario
+
+                var app_new_Usuari = new AppUsuario() { UserName = vmRegistro.Email, Nombre = vmRegistro.Nombre, Email = vmRegistro.Email, Ciudad = vmRegistro.Ciudad, CodigoPais = vmRegistro.CodigoPais, Pais = vmRegistro.Pais, Url = vmRegistro.Url, Direccion = vmRegistro.Direccion, FechaNacimiento = vmRegistro.FechaNacimiento, Estado = vmRegistro.Estado };
+                var resultado = await _userManager.CreateAsync(app_new_Usuari, vmRegistro.Password);
 
                 if (resultado.Succeeded)
                 {
-                    // Asignacion del usuario que se registra al rol
-                    await _userManager.AddToRoleAsync(usuario, "Registrado");
-                    //Implementacion de confirmacion de email en el registro
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
-                    var urlRetorno = Url.Action("ConfirmarEmail", "Cuentas", new { userId = usuario.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    await _emailSender.SendEmailAsync(rgViewModel.Email, "Confirmar su cuenta - Proyecto Identity", "Por favor confirme su cuenta dando click aquí: <a href=\"" + urlRetorno + "\">enlace</a>");
-                    // La persona quede autenticada dentro de la aplicacion
-                    await _signInManager.SignInAsync(usuario, isPersistent: false);
-                    //return RedirectToAction("Index", "Home");
-                    return LocalRedirect(returnurl); // Para que estén protegidos y no vulneren la aplicacion
+                    if (vmRegistro.RolSeleccionado != null && vmRegistro.RolSeleccionado.Length > 0 && vmRegistro.RolSeleccionado == "Administrador")
+                    {
+                        await _userManager.AddToRoleAsync(app_new_Usuari, "Administrador");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(app_new_Usuari, "Registrado");
+                    }
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(app_new_Usuari);
+                    var urlRetorno = Url.Action("ConfirmarEmail", "Cuentas", new { UserId = app_new_Usuari.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                    await _signInManager.SignInAsync(app_new_Usuari, isPersistent: false);
+
+                    await _emailSender.SendEmailAsync(vmRegistro.Email, "Confirmar su cuenta - Proyecto Identity", "Por favor confirme su contraseña dando click aqui <a href=\"" + urlRetorno + "\">enlace</a>");
+                    return LocalRedirect(returnurl);
                 }
-                ValidarErrores(resultado);
+                else { ValidarErrores(resultado); }
             }
-            return View(rgViewModel);
+
+            List<SelectListItem> listaRoles = new List<SelectListItem>();
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Registrado",
+                Text = "Registrado"
+            });
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Administrador",
+                Text = "Administrador"
+            });
+
+            vmRegistro.ListaRoles = (IEnumerable<SelectList>)listaRoles;
+            return View(vmRegistro);
         }
 
         // Manejo de errores
