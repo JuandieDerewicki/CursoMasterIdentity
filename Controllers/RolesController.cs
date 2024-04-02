@@ -24,5 +24,11 @@ namespace CursoIdentityUdemy.Controllers
             var roles = _contexto.Roles.ToList();
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Crear()
+        {
+            return View();
+        }
     }
 }
