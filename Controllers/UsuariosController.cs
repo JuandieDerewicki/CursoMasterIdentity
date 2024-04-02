@@ -3,6 +3,7 @@ using CursoIdentityUdemy.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CursoIdentityUdemy.Controllers
 {
@@ -18,12 +19,31 @@ namespace CursoIdentityUdemy.Controllers
             _userManager = userManager; 
             _contexto = contexto;   
         }
-        public IActionResult Index()
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var usuarios = await _contexto.AppUsuario.ToListAsync();
+            var rolesUsuario = await _contexto.UserRoles.ToListAsync();
+            var roles = await _contexto.Roles.ToListAsync();
+            foreach (var usuario in usuarios)
+            {
+                // Lo que vamos a hacer es obtener el id del usuario para poder obtener el rol en esa tabla e igualarlo con el id de la tabla Roles e iguandolo obtengo el nombre del rol
+                var rol = rolesUsuario.FirstOrDefault(u => u.UserId == usuario.Id);
+                if (rol == null)
+                {
+                    usuario.Rol = "Ninguno";
+                }
+                else
+                {
+                    usuario.Rol = roles.FirstOrDefault(u => u.Id == rol.RoleId).Name;
+                }
+            }
+            return View(usuarios);
         }
 
         // Editar perfil
+        [HttpGet]
         public IActionResult EditarPerfil(string id)
         {
             if(id == null)
