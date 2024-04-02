@@ -32,6 +32,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(IdentityRole rol)
         {
             if(await _roleManager.RoleExistsAsync(rol.Name))
@@ -57,6 +58,26 @@ namespace CursoIdentityUdemy.Controllers
                 var rolBD = _contexto.Roles.FirstOrDefault(r => r.Id == id);
                 return View(rolBD);
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(IdentityRole rol)
+        {
+            if (await _roleManager.RoleExistsAsync(rol.Name))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            // Se crea el rol
+            var rolBD = _contexto.Roles.FirstOrDefault(r => r.Id == rol.Id);
+            if(rolBD == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            rolBD.Name = rol.Name;
+            rolBD.NormalizedName = rol.Name.ToUpper();
+            var resultado = await _roleManager.UpdateAsync(rolBD);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
