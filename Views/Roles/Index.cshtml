@@ -6,6 +6,23 @@
 
 <h1 class="text-center">Administracion de roles</h1>
 
+@if (TempData["Correcto"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Correcto"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+    </div>
+
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+    </div>
+
+}
+
 <div class="row">
     <div class="col-sm-3 offset-9">
         <a asp-action="Crear" asp-controller="Roles" class="btn btn-primary w-100">Crear Nuevo Rol</a>

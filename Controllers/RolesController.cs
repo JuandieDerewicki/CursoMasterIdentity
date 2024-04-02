@@ -37,11 +37,12 @@ namespace CursoIdentityUdemy.Controllers
         {
             if(await _roleManager.RoleExistsAsync(rol.Name))
             {
+                TempData["Error"] = "El rol ya existe"; // El TEMPDATA es para mostrar errores
                 return RedirectToAction(nameof(Index));
             }
             // Se crea el rol
             await _roleManager.CreateAsync(new IdentityRole() { Name = rol.Name });
-
+            TempData["Correcto"] = "Rol creado correctamente"; // El TEMPDATA es para mostrar errores
             return RedirectToAction(nameof(Index));
         }
 
@@ -66,6 +67,7 @@ namespace CursoIdentityUdemy.Controllers
         {
             if (await _roleManager.RoleExistsAsync(rol.Name))
             {
+                TempData["Error"] = "El rol ya existe"; // El TEMPDATA es para mostrar errores
                 return RedirectToAction(nameof(Index));
             }
             // Se crea el rol
@@ -77,6 +79,7 @@ namespace CursoIdentityUdemy.Controllers
             rolBD.Name = rol.Name;
             rolBD.NormalizedName = rol.Name.ToUpper();
             var resultado = await _roleManager.UpdateAsync(rolBD);
+            TempData["Correcto"] = "Rol editado correctamente"; // El TEMPDATA es para mostrar errores
             return RedirectToAction(nameof(Index));
         }
 
@@ -87,16 +90,19 @@ namespace CursoIdentityUdemy.Controllers
             var rolBD = _contexto.Roles.FirstOrDefault(r => r.Id == id);
             if (rolBD == null)
             {
+                TempData["Error"] = "No existe el rol"; // El TEMPDATA es para mostrar errores
                 return RedirectToAction(nameof(Index));
             }
 
             var usuarioParaEsteRol = _contexto.UserRoles.Where(u => u.RoleId == id).Count();
             if(usuarioParaEsteRol > 0)
             {
+                TempData["Error"] = "El rol tiene usuarios, no se puede borrar"; // El TEMPDATA es para mostrar errores
                 return RedirectToAction(nameof(Index));
             }
 
             await _roleManager.DeleteAsync(rolBD);
+            TempData["Correcto"] = "Rol borrado correctamente"; // El TEMPDATA es para mostrar errores
             return RedirectToAction(nameof(Index));
         }
     }
