@@ -79,5 +79,25 @@ namespace CursoIdentityUdemy.Controllers
             var resultado = await _roleManager.UpdateAsync(rolBD);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Borrar(string id)
+        {
+            var rolBD = _contexto.Roles.FirstOrDefault(r => r.Id == id);
+            if (rolBD == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var usuarioParaEsteRol = _contexto.UserRoles.Where(u => u.RoleId == id).Count();
+            if(usuarioParaEsteRol > 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _roleManager.DeleteAsync(rolBD);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
