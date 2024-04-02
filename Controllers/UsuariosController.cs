@@ -42,6 +42,34 @@ namespace CursoIdentityUdemy.Controllers
             return View(usuarios);
         }
 
+
+        // Editar usuario (asignacion de rol)
+        [HttpGet]
+        public IActionResult EditarUsuario(string id) // No necesitamos que el metodo sea asincrono si es get
+        {
+            var usuarioBD = _contexto.AppUsuario.FirstOrDefault(u => u.Id == id);
+            if(usuarioBD == null)
+            {
+                return NotFound();
+            }
+            // Obtener roles actuales del usuario
+            var rolUsuario = _contexto.UserRoles.ToList();
+            var roles = _contexto.Roles.ToList();
+            var rol = rolUsuario.FirstOrDefault(u => u.UserId == usuarioBD.Id);
+            if (rol != null)
+            {
+                usuarioBD.IdRol = roles.FirstOrDefault(u => u.Id == rol.RoleId).Id;
+            }
+            usuarioBD.ListaRoles = _contexto.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id
+            });
+
+            return View(usuarioBD);
+        }
+
+
         // Editar perfil
         [HttpGet]
         public IActionResult EditarPerfil(string id)
