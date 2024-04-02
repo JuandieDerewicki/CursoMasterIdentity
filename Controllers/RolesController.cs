@@ -30,5 +30,18 @@ namespace CursoIdentityUdemy.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Crear(IdentityRole rol)
+        {
+            if(await _roleManager.RoleExistsAsync(rol.Name))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            // Se crea el rol
+            await _roleManager.CreateAsync(new IdentityRole() { Name = rol.Name });
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
