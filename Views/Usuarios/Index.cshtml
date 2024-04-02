@@ -7,6 +7,23 @@
 
 <h1 class="text-center">Administracion de usuarios</h1>
 
+@if (TempData["Correcto"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Correcto"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+    </div>
+
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+    </div>
+
+}
+
 <div class="row">
     <div class="col-sm-12">
         <div class="card-border">

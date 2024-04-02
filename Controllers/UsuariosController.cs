@@ -121,11 +121,14 @@ namespace CursoIdentityUdemy.Controllers
             {
                 // El usuario se encuentra bloqueado y lo podemos desbloquear
                 usuarioBD.LockoutEnd = DateTime.Now;
+                TempData["Correcto"] = "Usuario desbloqueado correctamente";
             }
             else
             {
                 // El usuario no está bloqueado y lo podemos bloquear
                 usuarioBD.LockoutEnd = DateTime.Now.AddYears(100);
+                TempData["Correcto"] = "Usuario bloqueado correctamente";
+
             }
 
             _contexto.SaveChanges();
@@ -147,6 +150,7 @@ namespace CursoIdentityUdemy.Controllers
 
             _contexto.AppUsuario.Remove(usuarioBD);
             _contexto.SaveChanges();
+            TempData["Correcto"] = "Usuario borrado correctamente";
             return RedirectToAction(nameof(Index));
         }
 
