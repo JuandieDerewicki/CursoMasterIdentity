@@ -20,6 +20,7 @@ namespace CursoIdentityUdemy.Controllers
             _contexto = contexto;   
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -44,6 +45,7 @@ namespace CursoIdentityUdemy.Controllers
 
 
         // Editar usuario (asignacion de rol)
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public IActionResult EditarUsuario(string id) // No necesitamos que el metodo sea asincrono si es get
         {
@@ -69,6 +71,7 @@ namespace CursoIdentityUdemy.Controllers
             return View(usuarioBD);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditarUsuario(AppUsuario usuario) 
@@ -107,6 +110,7 @@ namespace CursoIdentityUdemy.Controllers
 
 
         // Metodo bloquear-desbloquear usuario
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult BloquearDesbloquear(string idUsuario)
@@ -138,6 +142,7 @@ namespace CursoIdentityUdemy.Controllers
 
 
         // Metodo para borrar usuario
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Borrar(string idUsuario)
