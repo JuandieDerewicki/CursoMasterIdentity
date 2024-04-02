@@ -69,6 +69,39 @@ namespace CursoIdentityUdemy.Controllers
             return View(usuarioBD);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditarUsuario(AppUsuario usuario) 
+        {
+            if (ModelState.IsValid)
+            {
+                var usuarioBD = _contexto.AppUsuario.FirstOrDefault(u => u.Id == usuario.Id);
+                if (usuarioBD == null)
+                {
+                    return NotFound();
+                }
+
+                var rolUsuario = _contexto.UserRoles.FirstOrDefault(u => u.UserId == usuarioBD.Id);
+                if (rolUsuario != null)
+                {
+                    // Obtener el rol actual
+                    var rolActual = _contexto.Roles.Where(u => u.Id == rolUsuario.RoleId).Select(e => e.Name).FirstOrDefault();
+                    // Eliminar el rol actual
+                    await _userManager.RemoveFromRoleAsync(usuarioBD, rolActual);
+                }
+
+                // Agregar usuario al nuevo rol seleccionado
+                await _userManager.AddToRoleAsync(usuarioBD, _contexto.Roles.FirstOrDefault(u => u.Id == usuario.IdRol).Name);
+                _contexto.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            //usuarioBD.ListaRoles = _contexto.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            //{
+            //    Text = u.Name,
+            //    Value = u.Id
+            //});
+            return View();
+        }
+
 
         // Editar perfil
         [HttpGet]
