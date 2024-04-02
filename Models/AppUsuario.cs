@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CursoIdentityUdemy.Models
 {
@@ -15,5 +18,16 @@ namespace CursoIdentityUdemy.Models
         public bool Estado { get; set; }
 
         // De esta manera estamos ampliando o profundizando, ya que, los que vienen por defecto son los funcionales para hacer registro o login pero de esta manera extendiendo IdentityUser creamos la clase dentro de Model con los datos que quiero 
+
+        // Nuevas propiedades para usar roles y asignacion de un rol a un usuario
+        [NotMapped]
+        [Display(Name = " Rol para el usuario")]
+        public string IdRol { get; set; }
+
+        [NotMapped]
+        public string Rol { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> ListaRoles { get; set; }
     }
 }
