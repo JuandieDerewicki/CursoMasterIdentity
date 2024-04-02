@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\imagenes\\X-office-calendar.jpeg"
     },
     {
+      "Id": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\js\\qrcode.js",
+      "PackagePath": "staticwebassets\\js\\qrcode.js"
+    },
+    {
       "Id": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

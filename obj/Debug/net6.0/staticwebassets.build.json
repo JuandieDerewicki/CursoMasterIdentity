@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HTcV5Jlga5J5b5sbqW/kJZRNuf5Hm6S47fIC2Ilu5YA=",
+  "Hash": "kLXF38XRbgo0nRSUm7WUbY4bzappkosZJPE6Oxi8xaw=",
   "Source": "CursoIdentityUdemy",
   "BasePath": "_content/CursoIdentityUdemy",
   "Mode": "Default",
@@ -1250,6 +1250,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imagenes\\X-office-calendar.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\js\\qrcode.js",
+      "SourceId": "CursoIdentityUdemy",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\",
+      "BasePath": "_content/CursoIdentityUdemy",
+      "RelativePath": "js/qrcode.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\qrcode.js"
     },
     {
       "Identity": "C:\\Users\\bocaj\\source\\repos\\CursosPlatzi\\CursoIdentityUdemy\\wwwroot\\js\\site.js",
