@@ -43,5 +43,20 @@ namespace CursoIdentityUdemy.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult Editar(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return View();
+            }
+            else
+            {
+                // Actualizar rol
+                var rolBD = _contexto.Roles.FirstOrDefault(r => r.Id == id);
+                return View(rolBD);
+            }
+        }
     }
 }
