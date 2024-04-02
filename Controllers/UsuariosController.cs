@@ -134,6 +134,22 @@ namespace CursoIdentityUdemy.Controllers
         }
 
 
+        // Metodo para borrar usuario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Borrar(string idUsuario)
+        {
+            var usuarioBD = _contexto.AppUsuario.FirstOrDefault(u => u.Id == idUsuario);
+            if (usuarioBD == null)
+            {
+                return NotFound();
+            }
+
+            _contexto.AppUsuario.Remove(usuarioBD);
+            _contexto.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
 
         // Editar perfil
         [HttpGet]
