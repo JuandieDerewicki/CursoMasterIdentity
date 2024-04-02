@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+    @{
+        ViewData["Title"] = "Administracion de roles";
+    }
+
+<h1 class="text-center">Administracion de roles</h1>
+
+<div class="row">
+    <div class="col-sm-3 offset-9">
+        <a asp-action="Crear" asp-controller="Roles" class="btn btn-primary w-100">Crear Nuevo Rol</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card-border">
+            <div class="card-header">
+                <h3><strong>Lista de roles</strong></h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                @if(Model.Count() > 0)
+                {
+                    <table class="d-lg-table table-bordered" id="tablaRoles" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(m => item.Id)</td>
+                                    <td>@Html.DisplayFor(m => item.Name)</td>
+                                    <td>
+                                        <a class="btn btn-primary" asp-controller="Roles" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+                                        <form asp-action="Borrar" asp-route-id="@item.Id">
+                                            <button type="submit" onclick="return confirm('¿Está seguro de borrar este registro?)" class="btn btn-danger">Borrar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>No hay registros</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+        $(document).ready(Function(){
+
+            $('#tablaRoles').DataTable({
+
+                lenguage: {
+                    "Decimal": "",
+                    "emptyTable": "no hay informacion",
+                    "info": "Mostrando_START_END_de",
+                    "InfoEmpty": "Mostrando 0 to 0 entradas",
+                    "infoFiltered": "(Filtrando de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "LengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "Processing": "Procesando...",
+                    "search": "Buscar:",
+                     "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        });
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+

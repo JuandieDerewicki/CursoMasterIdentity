@@ -21,6 +21,7 @@ namespace CursoIdentityUdemy.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            var roles = _contexto.Roles.ToList();
             return View();
         }
     }
