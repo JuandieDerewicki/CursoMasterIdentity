@@ -70,6 +70,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditarUsuario(AppUsuario usuario) 
         {
             if (ModelState.IsValid)
@@ -94,13 +95,44 @@ namespace CursoIdentityUdemy.Controllers
                 _contexto.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            //usuarioBD.ListaRoles = _contexto.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-            //{
-            //    Text = u.Name,
-            //    Value = u.Id
-            //});
+
+            usuario.ListaRoles = _contexto.Roles.Select(u => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id
+            });
+
             return View();
         }
+
+
+        // Metodo bloquear-desbloquear usuario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BloquearDesbloquear(string idUsuario)
+        {
+            var usuarioBD = _contexto.AppUsuario.FirstOrDefault(u => u.Id == idUsuario);
+            if(usuarioBD == null)
+            {
+                return NotFound();  
+            }
+
+            if(usuarioBD.LockoutEnd != null && usuarioBD.LockoutEnd > DateTime.Now)
+            {
+                // El usuario se encuentra bloqueado y lo podemos desbloquear
+                usuarioBD.LockoutEnd = DateTime.Now;
+            }
+            else
+            {
+                // El usuario no está bloqueado y lo podemos bloquear
+                usuarioBD.LockoutEnd = DateTime.Now.AddYears(100);
+            }
+
+            _contexto.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
 
         // Editar perfil

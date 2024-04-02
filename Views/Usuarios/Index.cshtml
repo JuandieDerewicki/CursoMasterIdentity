@@ -37,9 +37,28 @@
                                     <td>@Html.DisplayFor(m => item.Telefono)</td>
                                     <td>@Html.DisplayFor(m => item.Rol)</td>
                                     <td>
-                                        <a class="btn btn-primary" asp-controller="Usuarios" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
-                                        <a class="btn btn-success" asp-controller="Usuarios" asp-action="Bloquear" asp-route-id="@item.Id">Bloquear</a>
-                                        <a class="btn btn-danger" asp-controller="Usuarios" asp-action="Borrar" asp-route-id="@item.Id">Borrar</a>
+                                        <div class="text-center">
+                                            <form asp-action="Borrar" asp-route-idUsuario="@item.Id">
+                                                <a class="btn btn-primary" asp-controller="Usuarios" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+
+                                                @if(item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
+                                                {
+                                                    // Aca se muestra la opcion para bloquear el usuario
+                                                    <button asp-controller="BloquearDesbloquear" asp-route-idUsuario="@item.Id" class="btn btn-secondary text-white" style="cursor:pointer" >
+                                                        <strong>Bloquear</strong>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    // Aca se muestra la opcion para bloquear el usuario 
+                                                    <button asp-controller="BloquearDesbloquear" asp-route-idUsuario="@item.Id" class="btn btn-warning text-white" style="cursor:pointer">
+                                                        <strong>Desbloquear</strong>
+                                                    </button>
+                                                }
+
+                                                <a class="btn btn-danger" asp-controller="Usuarios" asp-action="Borrar" asp-route-id="@item.Id">Borrar</a>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             }
