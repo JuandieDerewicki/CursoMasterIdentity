@@ -1,9 +1,12 @@
-﻿using CursoIdentityUdemy.Datos;
+﻿using CursoIdentityUdemy.Claims;
+using CursoIdentityUdemy.Datos;
 using CursoIdentityUdemy.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using static CursoIdentityUdemy.Models.ClaimsUsuarioViewModel;
 
 namespace CursoIdentityUdemy.Controllers
 {
@@ -201,6 +204,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         // Cambiar contraseña cuando el usuario está autenticado
+        [HttpGet]
         public IActionResult CambiarPassword(string id)
         {
             return View();
@@ -233,9 +237,42 @@ namespace CursoIdentityUdemy.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult ConfirmacionCambioPassword(string id)
         {
             return View();
+        }
+
+        // Manejo de Claims
+        public async Task<IActionResult> AdministrarClaimUsuarioAdministrarClaimUsuario(string idUsuario)
+        {
+            // Lo que estamos haciendo es poniendo los permisos de Crear y Borrar y elimine el permiso de Editar
+            IdentityUser usuario = await _userManager.FindByIdAsync(idUsuario); 
+            if(usuario == null)
+            {
+                return NotFound();
+            }
+
+            var claimUsuarioActual = await _userManager.GetClaimsAsync(usuario);
+
+            var modelo = new ClaimsUsuarioViewModel()
+            {
+                IdUsuario = idUsuario,
+            };
+
+            foreach (Claim claim in ManejoClaims.listaClaims)
+            {
+                ClaimUsuario claimUsuario = new ClaimUsuario
+                {
+                    TipoClaim = claim.Type
+                };
+                if(claimUsuarioActual.Any(c => c.Type == claim.Type))
+                {
+                    claimUsuario.Seleccionado = true;   
+                }
+                modelo.Claims.Add(claimUsuario);
+            }
+            return View(modelo);
         }
     }
 }

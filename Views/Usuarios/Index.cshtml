@@ -58,6 +58,11 @@
                                             <form asp-action="Borrar" asp-route-idUsuario="@item.Id">
                                                 <a class="btn btn-primary" asp-controller="Usuarios" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
 
+
+                                                <!-- Asignar Claims -->
+                                                <a class="btn btn-success" asp-controller="Usuarios" asp-action="AdministrarClaimUsuario" asp-route-id="@item.Id" style="cursor:pointer">Asignar Permisos/Claims</a>
+
+
                                                 @if(item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
                                                 {
                                                     // Aca se muestra la opcion para bloquear el usuario
