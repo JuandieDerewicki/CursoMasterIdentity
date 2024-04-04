@@ -5,8 +5,6 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursoIdentityUdemy", "CursoIdentityUdemy.csproj", "{73BE44E1-0598-4274-92E7-E2EF4F749F15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityConRazor", "..\IdentityConRazor\IdentityConRazor.csproj", "{41DEBD9B-E310-49EF-B6DB-043B244C8DA7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{73BE44E1-0598-4274-92E7-E2EF4F749F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73BE44E1-0598-4274-92E7-E2EF4F749F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73BE44E1-0598-4274-92E7-E2EF4F749F15}.Release|Any CPU.Build.0 = Release|Any CPU
-		{41DEBD9B-E310-49EF-B6DB-043B244C8DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41DEBD9B-E310-49EF-B6DB-043B244C8DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41DEBD9B-E310-49EF-B6DB-043B244C8DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41DEBD9B-E310-49EF-B6DB-043B244C8DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
