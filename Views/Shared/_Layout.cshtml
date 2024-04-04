@@ -40,6 +40,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        <!-- Pruebas autorizacion (roles y claims) -->
+
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-item dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Acceso/Auth
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoPublico">Acceso público</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAutenticado">Acceso autenticado</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoUsuario">Acceso usuario</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoRegistrado">Acceso registrado</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministrador">Acceso administrador</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoUsuarioAdministrador">Acceso usuario o administrador</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoUsuarioYAdministrador">Acceso usuario y administrador</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministradorPermisoCrear">Acceso administrador / permiso crear</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministradorPermisoEditarBorrar">Acceso administrador / permiso editar y borrar</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministradorPermisoCrearEditarBorrar">Acceso administrador / permiso crear, editar y borrar</a>
+
+                            </ul>
+                        </li>
+
                     </ul>
 
                     <!-- Vista parcial para acceso (login) y registro. Ya cambiamos de white a dark el navbar-->
