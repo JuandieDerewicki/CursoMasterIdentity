@@ -60,7 +60,7 @@
 
 
                                                 <!-- Asignar Claims -->
-                                                <a class="btn btn-success" asp-controller="Usuarios" asp-action="AdministrarClaimUsuario" asp-route-id="@item.Id" style="cursor:pointer">Asignar Permisos/Claims</a>
+                                                <a class="btn btn-success" asp-controller="Usuarios" asp-action="AdministrarClaimUsuario" asp-route-idUsuario="@item.Id" style="cursor:pointer">Asignar Permisos/Claims</a>
 
 
                                                 @if(item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)

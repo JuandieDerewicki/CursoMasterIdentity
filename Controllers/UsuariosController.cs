@@ -244,7 +244,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         // Manejo de Claims
-        public async Task<IActionResult> AdministrarClaimUsuarioAdministrarClaimUsuario(string idUsuario)
+        public async Task<IActionResult> AdministrarClaimUsuario(string idUsuario)
         {
             // Lo que estamos haciendo es poniendo los permisos de Crear y Borrar y elimine el permiso de Editar
             IdentityUser usuario = await _userManager.FindByIdAsync(idUsuario); 
