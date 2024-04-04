@@ -244,6 +244,7 @@ namespace CursoIdentityUdemy.Controllers
         }
 
         // Manejo de Claims
+        [HttpGet]
         public async Task<IActionResult> AdministrarClaimUsuario(string idUsuario)
         {
             // Lo que estamos haciendo es poniendo los permisos de Crear y Borrar y elimine el permiso de Editar
@@ -274,5 +275,36 @@ namespace CursoIdentityUdemy.Controllers
             }
             return View(modelo);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AdministrarClaimUsuario(ClaimsUsuarioViewModel cuViewModel)
+        {
+            // Lo que estamos haciendo es poniendo los permisos de Crear y Borrar y elimine el permiso de Editar
+            IdentityUser usuario = await _userManager.FindByIdAsync(cuViewModel.IdUsuario);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            var claims = await _userManager.GetClaimsAsync(usuario);
+            var resultado = await _userManager.RemoveClaimsAsync(usuario, claims);
+
+            if(!resultado.Succeeded)
+            {
+                return View(cuViewModel);
+            }
+
+            resultado = await _userManager.AddClaimsAsync(usuario, cuViewModel.Claims.Where(c => c.Seleccionado)
+                .Select(c => new Claim(c.TipoClaim, c.Seleccionado.ToString())));
+
+            if (!resultado.Succeeded)
+            {
+                return View(cuViewModel);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 }
