@@ -44,6 +44,19 @@ builder.Services.AddAuthentication().AddFacebook(options =>
 //    options.ClientSecret = ""; // BUSCAR CON GOOGLE CLOUD
 //});
 
+// Soporte para autorizacion basada en directivas/Policy 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
+    options.AddPolicy("Registrado", policy => policy.RequireRole("Registrado"));
+    options.AddPolicy("Usuario", policy => policy.RequireRole("Usuario"));
+    options.AddPolicy("UsuarioYAdministrador", policy => policy.RequireRole("Administrador").RequireRole("Usuario"));
+    // Uso de claims
+    options.AddPolicy("AdministradorCrear", policy => policy.RequireRole("Administrador").RequireClaim("Crear", "True"));
+    options.AddPolicy("AdministradorEditarBorrar", policy => policy.RequireRole("Administrador").RequireClaim("Editar", "True").RequireClaim("Borrar", "True");
+    options.AddPolicy("AdministradorCrearEditarBorrar", policy => policy.RequireRole("Administrador").RequireClaim("Crear", "True").RequireClaim("Editar", "True").RequireClaim("Borrar", "True"));
+});
+
 // Se agrega IEmailSender
 builder.Services.AddTransient<IEmailSender, MailSender>();
 
